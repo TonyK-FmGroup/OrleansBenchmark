@@ -3,7 +3,7 @@
 namespace Grains;
 
 [GenerateSerializer]
-public class BranchStockInfo
+public record BranchStockInfo
 {
     // [Id(0)] public Dictionary<string, StockInfo> Stock = new();
     // [Id(1)] public Dictionary<string, IStockGrain> StockGrains = new();
