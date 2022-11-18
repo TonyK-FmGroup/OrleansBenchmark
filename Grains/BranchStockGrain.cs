@@ -6,11 +6,11 @@ public interface IBranchStockGrain : IGrainWithStringKey
 {
     Task ReceiveStock(string Id, StockInfo stockItem, IStockGrain stockGrain);
 
-    Task<Dictionary<string, StockInfo>> GetStock();
+    Task<List<StockInfo>> GetStock();
 
-    Task<Dictionary<string, StockInfo>> GetStockFromGrains();
+    //  Task<Dictionary<string, StockInfo>> GetStockFromGrains();
 
-    Task<StockInfo> GetByBarcode(string barcode);
+    //  Task<StockInfo> GetByBarcode(string barcode);
 
     Task<StockInfo> GetByBarcodeIndex(string barcode);
 }
@@ -23,11 +23,11 @@ public class BranchStockGrain : IBranchStockGrain
 {
     private readonly BranchStockInfo State = new();
 
-    public Task<StockInfo> GetByBarcode(string barcode)
-    {
-        var stock = State.Stock.FirstOrDefault(x => x.Value.Barcode == barcode).Value;
-        return Task.FromResult(stock);
-    }
+    /* public Task<StockInfo> GetByBarcode(string barcode)
+     {
+         var stock = State.Stock.FirstOrDefault(x => x.Value.Barcode == barcode).Value;
+         return Task.FromResult(stock);
+     }*/
 
     public Task<StockInfo> GetByBarcodeIndex(string barcode)
     {
@@ -35,29 +35,29 @@ public class BranchStockGrain : IBranchStockGrain
         return Task.FromResult(stock);
     }
 
-    public Task<Dictionary<string, StockInfo>> GetStock()
+    public Task<List<StockInfo>> GetStock()
     {
-        return Task.FromResult(State.Stock);
+        return Task.FromResult(State.BarcodeIndex.Select(x => x.Value).ToList());
     }
 
-    public Task<Dictionary<string, StockInfo>> GetStockFromGrains()
-    {
-        var info = new Dictionary<string, StockInfo>();
-        info = State.StockGrains.ToDictionary(g => g.Key, s => s.Value.GetStockInfo().Result);
-        return Task.FromResult(State.Stock);
-    }
+    /* public Task<Dictionary<string, StockInfo>> GetStockFromGrains()
+     {
+         var info = new Dictionary<string, StockInfo>();
+         info = State.StockGrains.ToDictionary(g => g.Key, s => s.Value.GetStockInfo().Result);
+         return Task.FromResult(State.Stock);
+     }*/
 
     public Task ReceiveStock(string Id, StockInfo stockInfo, IStockGrain stockGrain)
     {
-        if (State.Stock.ContainsKey(Id) == false)
-        {
-            State.Stock.Add(Id, stockInfo);
-        }
+        /* if (State.Stock.ContainsKey(Id) == false)
+         {
+             State.Stock.Add(Id, stockInfo);
+         }
 
-        if (State.StockGrains.ContainsKey(Id) == false)
-        {
-            State.StockGrains.Add(Id, stockGrain);
-        }
+         if (State.StockGrains.ContainsKey(Id) == false)
+         {
+             State.StockGrains.Add(Id, stockGrain);
+         }*/
 
         if (State.BarcodeIndex.ContainsKey(stockInfo.Barcode) == false)
         {
