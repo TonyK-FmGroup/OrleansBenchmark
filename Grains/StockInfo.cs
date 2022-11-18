@@ -9,4 +9,5 @@ public class StockInfo
     [Id(1)] public string Title { get; set; } = string.Empty;
     [Id(2)] public int Quantity { get; set; }
     [Id(3)] public string StoreId { get; set; } = string.Empty;
+    [Id(4)] public string Barcode { get; set; } = string.Empty;
 }
